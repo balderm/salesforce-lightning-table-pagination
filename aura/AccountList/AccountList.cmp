@@ -1,0 +1,76 @@
+<aura:component controller="AccountsController" >
+	
+	<aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+	
+	<aura:registerEvent name="updateTotalSize" type="c:ListTotalSizeUpdate"/>
+
+	<aura:attribute name="accountList" type="Account[]" />
+	<aura:attribute name="paginatedList" type="Account[]" />
+	<aura:attribute name="pageSizeList" type="Integer[]" default="5, 10, 15, 20" />
+	<aura:attribute name="pageSize" type="Integer" default="5" />
+	<aura:attribute name="totalSize" type="Integer" />
+	<aura:attribute name="startValue" type="Integer" />
+	<aura:attribute name="endValue" type="Integer" />
+
+	<table class="slds-table slds-table--bordered slds-table--striped 
+				slds-table--cell-buffer slds-table--fixed-layout">
+
+		<thead>
+			<tr class="slds-text-heading--label">
+				<th scope="col"><div class="slds-truncate" title="Name">Name</div></th>
+				<th scope="col"><div class="slds-truncate" title="Type">Type</div></th>
+				<th scope="col"><div class="slds-truncate" title="N° of Employees">N° of Employees</div></th>
+				<th scope="col"><div class="slds-truncate" title="Ticker Symbol">Ticker Symbol</div></th>
+				<th scope="col"><div class="slds-truncate" title="Phone">Phone</div></th>
+				<th scope="col"><div class="slds-truncate" title="Delete">Delete</div></th>
+			</tr>
+		</thead>
+
+		<tbody>
+			<aura:iteration items="{!v.paginatedList}" var="account">
+				<tr>
+					<td>
+						<div class="slds-truncate" title="{!account.Id}">
+							<a href="{! '/one/one.app?#/sObject/' + account.Id + '/view' }" target="_blank">{!account.Name}</a>
+						</div>
+					</td>
+					<td><div class="slds-truncate" title="{!account.Type}">{!account.Type}</div></td>
+					<td><div class="slds-truncate" title="{!account.NumberOfEmployees}">{!account.NumberOfEmployees}</div></td>
+					<td><div class="slds-truncate" title="{!account.TickerSymbol}">{!account.TickerSymbol}</div></td>
+					<td><div class="slds-truncate" title="{!account.Phone}">{!account.Phone}</div></td>
+					<td>
+						<input class="account-name" type="hidden" value="{! account.Name }" />
+						<lightning:button label="Delete" iconName="utility:delete" iconPosition="left" variant="destructive" onclick="{! c.deleteAccount }" />
+					</td>
+				</tr>
+			</aura:iteration>
+		</tbody>
+	</table>
+
+	<lightning:layout class="slds-p-top--large slds-p-bottom--large" horizontalAlign="space" verticalAlign="end">
+		<!-- Previous buttons -->
+		<lightning:layoutItem>
+			<lightning:button variant="brand" label="First" iconName="utility:back" disabled="{! v.startValue == 0 }" onclick="{! c.firstPage }" />
+			<lightning:button variant="brand" label="Previous" iconName="utility:chevronleft" disabled="{! v.startValue == 0 }" onclick="{! c.previousPage }" />
+		</lightning:layoutItem>
+		<!-- / Previous buttons -->
+
+		<!-- Records per page picker -->
+		<lightning:layoutItem>
+			<lightning:select name="selectPageSize" label="Records per page" onchange="{! c.changePageSize }">
+				<aura:iteration items="{! v.pageSizeList }" var="item">
+					<option value="{! item }" text="{! item }" ></option>
+				</aura:iteration>
+			</lightning:select>
+		</lightning:layoutItem>
+		<!-- / Records per page picker -->
+
+		<!--  -->
+		<lightning:layoutItem>
+			<lightning:button variant="brand" class="slds-text-align--center" label="Next" iconPosition="right" iconName="utility:chevronright" disabled="{! v.endValue == (v.totalSize-1) }" onclick="{! c.nextPage }" />
+			<lightning:button variant="brand" class="slds-text-align--center" label="Last" iconPosition="right" iconName="utility:forward" disabled="{! v.endValue == (v.totalSize-1) }" onclick="{! c.lastPage }" />
+		</lightning:layoutItem>
+
+	</lightning:layout>
+
+</aura:component>

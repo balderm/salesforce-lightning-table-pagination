@@ -1,0 +1,35 @@
+<aura:component >
+
+	<aura:handler event="c:ListTotalSizeUpdate" action="{!c.handleUpdateTotalSize}" />
+
+	<aura:attribute name="totalSize" type="Integer" />
+	
+	<!-- PAGE HEADER -->
+	<div class="slds-page-header" role="banner">
+		<div class="slds-grid">
+			<div class="slds-col slds-has-flexi-truncate">
+				<!-- HEADING AREA -->
+				<div class="slds-media slds-no-space slds-grow">
+					<div class="slds-media__figure">
+						<lightning:icon iconName="standard:account" />
+					</div>
+					<div class="slds-media__body">
+						<p class="slds-text-title--caps slds-line-height--reset">Accounts</p>
+						<h1 class="slds-page-header__title slds-m-right--small slds-align-middle slds-truncate" title="My Accounts">My Accounts</h1>
+					</div>
+				</div>
+				<!-- / HEADING AREA -->
+			</div>
+			<div class="slds-col slds-no-flex slds-grid slds-align-top">
+				<button class="slds-button slds-button--neutral">New Account</button>
+			</div>
+		</div>
+		<div class="slds-grid">
+			<div class="slds-col slds-align-bottom slds-p-top--small">
+				<p class="slds-text-body--small page-header__info">{!v.totalSize} items</p>
+			</div>
+		</div>
+	</div>
+	<!-- / PAGE HEADER -->
+
+</aura:component>
